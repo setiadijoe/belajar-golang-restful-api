@@ -1,15 +1,17 @@
 package main
 
 import (
+	"net/http"
+
+	"programmerzamannow/belajar-golang-dependencies-injection/app"
+	"programmerzamannow/belajar-golang-dependencies-injection/controller"
+	"programmerzamannow/belajar-golang-dependencies-injection/helper"
+	"programmerzamannow/belajar-golang-dependencies-injection/middleware"
+	"programmerzamannow/belajar-golang-dependencies-injection/repository"
+	"programmerzamannow/belajar-golang-dependencies-injection/service"
+
 	"github.com/go-playground/validator/v10"
 	_ "github.com/go-sql-driver/mysql"
-	"net/http"
-	"programmerzamannow/belajar-golang-restful-api/app"
-	"programmerzamannow/belajar-golang-restful-api/controller"
-	"programmerzamannow/belajar-golang-restful-api/helper"
-	"programmerzamannow/belajar-golang-restful-api/middleware"
-	"programmerzamannow/belajar-golang-restful-api/repository"
-	"programmerzamannow/belajar-golang-restful-api/service"
 )
 
 func main() {

@@ -2,8 +2,9 @@ package middleware
 
 import (
 	"net/http"
-	"programmerzamannow/belajar-golang-restful-api/helper"
-	"programmerzamannow/belajar-golang-restful-api/model/web"
+
+	"programmerzamannow/belajar-golang-dependencies-injection/helper"
+	"programmerzamannow/belajar-golang-dependencies-injection/model/web"
 )
 
 type AuthMiddleware struct {

@@ -2,9 +2,11 @@ package exception
 
 import (
 	"github.com/go-playground/validator/v10"
+
 	"net/http"
-	"programmerzamannow/belajar-golang-restful-api/helper"
-	"programmerzamannow/belajar-golang-restful-api/model/web"
+
+	"programmerzamannow/belajar-golang-dependencies-injection/helper"
+	"programmerzamannow/belajar-golang-dependencies-injection/model/web"
 )
 
 func ErrorHandler(writer http.ResponseWriter, request *http.Request, err interface{}) {
@@ -34,7 +36,7 @@ func validationErrors(writer http.ResponseWriter, request *http.Request, err int
 
 		helper.WriteToResponseBody(writer, webResponse)
 		return true
-	}else{
+	} else {
 		return false
 	}
 }
