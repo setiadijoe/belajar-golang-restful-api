@@ -2,13 +2,19 @@ package app
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
+
+	_ "github.com/lib/pq"
 
 	"programmerzamannow/belajar-golang-dependencies-injection/helper"
 )
 
 func NewDB() *sql.DB {
-	db, err := sql.Open("mysql", "root@tcp(localhost:3306)/belajar_golang_restful_api")
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		"localhost", 5432, "postgres", "postgres", "belajar_database_golang")
+	db, err := sql.Open("postgres", psqlInfo)
 	helper.PanicIfError(err)
 
 	db.SetMaxIdleConns(5)

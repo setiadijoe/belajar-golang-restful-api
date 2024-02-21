@@ -17,11 +17,9 @@ func NewCategoryRepository() CategoryRepository {
 }
 
 func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
-	SQL := "insert into category(name) values (?)"
-	result, err := tx.ExecContext(ctx, SQL, category.Name)
-	helper.PanicIfError(err)
-
-	id, err := result.LastInsertId()
+	SQL := "INSERT INTO category(name) VALUES ($1) RETURNING id"
+	var id int64
+	err := tx.QueryRowContext(ctx, SQL, category.Name).Scan(&id)
 	helper.PanicIfError(err)
 
 	category.Id = int(id)
@@ -29,21 +27,21 @@ func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, 
 }
 
 func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
-	SQL := "update category set name = ? where id = ?"
-	_, err := tx.ExecContext(ctx, SQL, category.Name, category.Id)
+	SQL := "UPDATE category SET name = $1 WHERE id = $2"
+	err := tx.QueryRowContext(ctx, SQL, category.Name, category.Id).Err()
 	helper.PanicIfError(err)
 
 	return category
 }
 
 func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category domain.Category) {
-	SQL := "delete from category where id = ?"
-	_, err := tx.ExecContext(ctx, SQL, category.Id)
+	SQL := "DELETE FROM category WHERE id = $1"
+	err := tx.QueryRowContext(ctx, SQL, category.Id).Err()
 	helper.PanicIfError(err)
 }
 
 func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (domain.Category, error) {
-	SQL := "select id, name from category where id = ?"
+	SQL := "SELECT id, name FROM category WHERE id = $1"
 	rows, err := tx.QueryContext(ctx, SQL, categoryId)
 	helper.PanicIfError(err)
 	defer rows.Close()
@@ -59,7 +57,7 @@ func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.
 }
 
 func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Category {
-	SQL := "select id, name from category"
+	SQL := "SELECT id, name FROM category"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()
